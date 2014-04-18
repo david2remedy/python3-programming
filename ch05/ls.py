@@ -13,24 +13,23 @@ def main():
                                        "The paths are optional; if not given . is used"))
 
     parser.add_option("-H", "--hidden", action="store_true", dest="show_hidden", 
-                      help="show hidden files [default: %default]")
+                      help="show hidden files [default: off]")
 
     parser.add_option("-m", "--modified", action="store_true", dest="show_last_modified",
-                      help="show last modified date/time [default: %default]")
+                      help="show last modified date/time [default: off]")
 
-    parser.add_option("-o", "--order", dest="order", type="choice",
-                      choices=["name", "n", "modified", "m", "size", "s"],
-                      help=("order by ('name', 'n', 'modified', 'm', 'size', 's') "
-                            "[default: %default]"))
+    order_choices = ["name", "n", "modified", "m", "size", "s"]
+
+    parser.add_option("-o", "--order", dest="order", type="choice", default="name",
+                      choices=order_choices,
+                      help=("order by ({0}) [default: %default]".format(", ".join(
+                        ["'{0}'".format(choice) for choice in order_choices]))))
 
     parser.add_option("-r", "--recursive", action="store_true", dest="recursive",
-                      help="recurse into subdirectories [default: %default]")
+                      help="recurse into subdirectories [default: off]")
 
     parser.add_option("-s", "--size", action="store_true", dest="show_sizes",
-                      help="show sizes [default: %default]")
-
-    parser.set_defaults(show_hidden="off", show_last_modified="off", order="name", 
-                        recursive="off", show_sizes="off")
+                      help="show sizes [default: off]")
 
     options, args = parser.parse_args()
     directories = args if len(args) > 0 else ["."]
